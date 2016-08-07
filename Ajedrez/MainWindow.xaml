@@ -1,0 +1,122 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Ajedrez"
+        mc:Ignorable="d"
+        Title="Ajedrez" Height="680" Width="1000" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="Icono.png">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Recursos\Fondo.jpg"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20px" />
+            <RowDefinition />
+            <RowDefinition Height="20px" />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <Menu>
+                <MenuItem Header="Juego">
+                    <MenuItem Header="Nuevo Juego" InputGestureText="Ctrl+N"/>
+                    <Separator/>
+                    <MenuItem Header="Salir" InputGestureText="Ctrl+S"/>
+                </MenuItem>
+            </Menu>
+        </StackPanel>
+        <Grid Height="50" Grid.Row="1" Margin="0,10,61.515,0" VerticalAlignment="Top" d:LayoutOverrides="Height" HorizontalAlignment="Right" Width="130.186">
+            <RadioButton Name ="JugadorRojo" Foreground="White" Content="Jugador Rojas" Margin="10,0,-10,0" IsChecked="True"/>
+            <RadioButton Name ="JugadorNegro" Margin="10,20,-10,0" Foreground="White" Content="Jugador Negras"></RadioButton>
+        </Grid>
+        <Grid Name="Rojos" HorizontalAlignment="Left" Margin="31.702,56,0,5" Height="550" Width="137.5" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+        </Grid>
+        <Grid Name="Negros" HorizontalAlignment="Right" Margin="0,60,29.72,1" Height="550" Width="137.5" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+        </Grid>
+        <StackPanel Grid.Row="1">
+            <Grid Height="600" Width="600">
+                <Grid.Background>
+                    <ImageBrush ImageSource="Recursos\Cuadro.jpg"/>
+                </Grid.Background>
+                <Grid Name="Tablero" Height="550" Width="550"  MouseMove="Tablero_MouseMove" MouseDown="Tablero_MouseDown">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="Recursos\Tablero.jpeg"/>
+                    </Grid.Background>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                </Grid>
+                <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Bottom">
+                    <TextBlock Name="tagA" TextAlignment="Center" Text="   A" FontSize="26" Foreground="LightBlue" Width="94.375"/>
+                    <TextBlock Name="tagB" TextAlignment="Center" Text="B" FontSize="26" Foreground="LightBlue" Width="68.75"/>
+                    <TextBlock Name="tagC" TextAlignment="Center" Text="C" FontSize="26" Foreground="LightBlue" Width="68.75"/>
+                    <TextBlock Name="tagD" TextAlignment="Center" Text="D" FontSize="26" Foreground="LightBlue" Width="68.75"/>
+                    <TextBlock Name="tagE" TextAlignment="Center" Text="E" FontSize="26" Foreground="LightBlue" Width="68.75"/>
+                    <TextBlock Name="tagF" TextAlignment="Center" Text="F" FontSize="26" Foreground="LightBlue" Width="68.75"/>
+                    <TextBlock Name="tagG" TextAlignment="Center" Text="G" FontSize="26" Foreground="LightBlue" Width="68.75"/>
+                    <TextBlock x:Name="tagH" TextAlignment="Center" Text="H" FontSize="26" Foreground="LightBlue" Width="68.75"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Width="25" HorizontalAlignment="Left">
+                    <TextBlock x:Name="tag1" TextAlignment="Center" FontSize="26" Foreground="LightBlue"  Width="25" Height="102.375"><Run/><LineBreak/><Run Text="8"/></TextBlock>
+                    <TextBlock Name="tag2" TextAlignment="Center" Text="7" FontSize="26" Foreground="LightBlue" Width="25" Height="73.75"/>
+                    <TextBlock Name="tag3" TextAlignment="Center" Text="6" FontSize="26" Foreground="LightBlue" Width="25" Height="68.75"/>
+                    <TextBlock Name="tag4" TextAlignment="Center" Text="5" FontSize="26" Foreground="LightBlue" Width="25" Height="68.75"/>
+                    <TextBlock Name="tag5" TextAlignment="Center" Text="4" FontSize="26" Foreground="LightBlue" Width="25" Height="68.75"/>
+                    <TextBlock Name="tag6" TextAlignment="Center" Text="3" FontSize="26" Foreground="LightBlue" Width="25" Height="68.75"/>
+                    <TextBlock Name="tag7" TextAlignment="Center" Text="2" FontSize="26" Foreground="LightBlue" Width="25" Height="68.75"/>
+                    <TextBlock Name="tag8" TextAlignment="Center" Text="1" FontSize="26" Foreground="LightBlue" Width="25" Height="68.75"/>
+                </StackPanel>
+            </Grid>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="2">
+            <TextBlock Name="Informacion" FontSize="15" Foreground="DarkGoldenrod" Text="Posición: x,y ; Pieza: Torre; Gana: Blancas; Turno: Blancas; Tiempo: 14:53:00" />
+        </StackPanel>
+    </Grid>
+</Window>
