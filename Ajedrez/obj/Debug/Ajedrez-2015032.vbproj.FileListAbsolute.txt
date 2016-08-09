@@ -1,0 +1,4 @@
+C:\Users\INFORMATICA.FKINAL\Documents\Visual Studio 2015\Projects\Ajedrez\Ajedrez\bin\Debug\Ajedrez.exe.config
+C:\Users\INFORMATICA.FKINAL\Documents\Visual Studio 2015\Projects\Ajedrez\Ajedrez\obj\Debug\Ajedrez.exe
+C:\Users\INFORMATICA.FKINAL\Documents\Visual Studio 2015\Projects\Ajedrez\Ajedrez\obj\Debug\Ajedrez.xml
+C:\Users\INFORMATICA.FKINAL\Documents\Visual Studio 2015\Projects\Ajedrez\Ajedrez\obj\Debug\Ajedrez.pdb
