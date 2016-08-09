@@ -18,9 +18,9 @@
         <StackPanel>
             <Menu>
                 <MenuItem Header="Juego">
-                    <MenuItem Header="Nuevo Juego" InputGestureText="Ctrl+N"/>
+                    <MenuItem Header="Nuevo Juego" Click="MenuItem_Click" InputGestureText="Ctrl+N"/>
                     <Separator/>
-                    <MenuItem Header="Salir" InputGestureText="Ctrl+S"/>
+                    <MenuItem Header="Salir" Click="MenuItem_Click_1" InputGestureText="Ctrl+S"/>
                 </MenuItem>
             </Menu>
         </StackPanel>
