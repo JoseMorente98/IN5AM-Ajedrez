@@ -16,3 +16,7 @@ c:\users\josé morente\documents\visual studio 2015\Projects\Ajedrez\Ajedrez\obj
 c:\users\josé morente\documents\visual studio 2015\Projects\Ajedrez\Ajedrez\obj\Debug\Ajedrez.pdb
 C:\Users\José Morente\Documents\Visual Studio 2015\Projects\Ajedrez\Ajedrez\obj\Debug\Piezas\Pieces.g.vb
 C:\Users\José Morente\Documents\Visual Studio 2015\Projects\Ajedrez\Ajedrez\obj\Debug\Piezas\Pieces.baml
+C:\Users\INFORMATICA.FKINAL\Documents\Visual Studio 2015\Projects\Ajedrez\Ajedrez\bin\Debug\Ajedrez.exe.config
+C:\Users\INFORMATICA.FKINAL\Documents\Visual Studio 2015\Projects\Ajedrez\Ajedrez\obj\Debug\Ajedrez.exe
+C:\Users\INFORMATICA.FKINAL\Documents\Visual Studio 2015\Projects\Ajedrez\Ajedrez\obj\Debug\Ajedrez.xml
+C:\Users\INFORMATICA.FKINAL\Documents\Visual Studio 2015\Projects\Ajedrez\Ajedrez\obj\Debug\Ajedrez.pdb

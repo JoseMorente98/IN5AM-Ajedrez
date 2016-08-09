@@ -2,6 +2,7 @@
 
 Class MainWindow
     Private _matriz(0 To 7, 0 To 7) As Object
+    Private _matrizN(0 To 1, 0 To 7) As Object
     Private _matrizR(0 To 1, 0 To 7) As Object
     Dim _mouseX As Double
     Dim _mouseY As Double
@@ -22,6 +23,8 @@ Class MainWindow
     End Sub
 
     Public Sub NewGame()
+        Ganan.Text = ""
+
         Dim _colorNegro As New SolidColorBrush(Colors.Transparent)
         Dim _colorBlanco As New SolidColorBrush(Colors.Black)
 
@@ -156,6 +159,9 @@ Class MainWindow
         Dim Msg As MsgBoxResult
         Msg = MsgBox("¿Deseas empezar nuevo juego?", vbYesNo, "Nuevo Juego")
         If Msg = MsgBoxResult.Yes Then
+            JugadorRojo.IsChecked = True
+            Negros.Children.Clear()
+            Rojos.Children.Clear()
             Tablero.Children.Clear()
             NewGame()
         Else
@@ -179,8 +185,45 @@ Class MainWindow
         Dim _ordenadas As String = ""
         _mouseX = e.GetPosition(sender).X \ 68.75
         _mouseY = e.GetPosition(sender).Y \ 68.75
+        Select Case _mouseX
+            Case 0
+                _abcisas = "A"
+            Case 1
+                _abcisas = "B"
+            Case 2
+                _abcisas = "C"
+            Case 3
+                _abcisas = "D"
+            Case 4
+                _abcisas = "E"
+            Case 5
+                _abcisas = "F"
+            Case 6
+                _abcisas = "G"
+            Case 7
+                _abcisas = "H"
+        End Select
 
-        Informacion.Text = "Posición: " & _mouseX & "," & _mouseY & "; Pieza: Torre; Gana: Blancas; Turno: Blancas; Tiempo: 14:53:00"
+        Select Case _mouseY
+            Case 0
+                _ordenadas = "8"
+            Case 1
+                _ordenadas = "7"
+            Case 2
+                _ordenadas = "6"
+            Case 3
+                _ordenadas = "5"
+            Case 4
+                _ordenadas = "4"
+            Case 5
+                _ordenadas = "3"
+            Case 6
+                _ordenadas = "2"
+            Case 7
+                _ordenadas = "1"
+        End Select
+
+        Informacion.Text = "Coordenadas del Juego: " & _abcisas & "," & _ordenadas & ""
     End Sub
 
     Private Sub Tablero_MouseDown(sender As Object, e As MouseButtonEventArgs)
@@ -280,7 +323,159 @@ Class MainWindow
             If JugadorRojo.IsChecked = True Then
                 If (_mouseY = _newY + 1) Then
                     If Not IsNothing(_matriz(_mouseX, _mouseY)) Then
-                        If _matriz(_mouseX, _mouseY).fill.ToString.Contains("Negro") Then
+                        If _matriz(_mouseX, _mouseY).fill.ToString.Contains("AlfilNegro") Then
+                            If IsNothing(_matrizN(1, 4)) Then
+                                Dim _alfil As New Pieces
+                                _alfil.Fill = ChessPieces.AlfilNegro
+                                Grid.SetColumn(_alfil, 1)
+                                Grid.SetRow(_alfil, 4)
+                                Negros.Children.Add(_alfil)
+                                _matrizN(1, 4) = _alfil
+                            ElseIf IsNothing(_matrizN(1, 5)) Then
+                                Dim _alfil As New Pieces
+                                _alfil.Fill = ChessPieces.AlfilNegro
+                                Grid.SetColumn(_alfil, 1)
+                                Grid.SetRow(_alfil, 5)
+                                Negros.Children.Add(_alfil)
+                                _matrizN(1, 5) = _alfil
+                            End If
+                            Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                            _matriz(_mouseX, _mouseY) = Nothing
+                            Mover()
+                            JugadorRojo.IsChecked = False
+                            JugadorNegro.IsChecked = True
+                        ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("CaballoNegro") Then
+                            If IsNothing(_matrizN(1, 2)) Then
+                                Dim _caballo As New Pieces
+                                _caballo.Fill = ChessPieces.CaballoNegro
+                                Grid.SetColumn(_caballo, 1)
+                                Grid.SetRow(_caballo, 2)
+                                Negros.Children.Add(_caballo)
+                                _matrizN(1, 2) = _caballo
+                            ElseIf IsNothing(_matrizN(1, 3)) Then
+                                Dim _caballo As New Pieces
+                                _caballo.Fill = ChessPieces.CaballoNegro
+                                Grid.SetColumn(_caballo, 1)
+                                Grid.SetRow(_caballo, 3)
+                                Negros.Children.Add(_caballo)
+                                _matrizN(1, 3) = _caballo
+                            End If
+                            Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                            _matriz(_mouseX, _mouseY) = Nothing
+                            Mover()
+                            JugadorRojo.IsChecked = False
+                            JugadorNegro.IsChecked = True
+                        ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("PeonNegro") Then
+                            If IsNothing(_matrizN(0, 0)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonNegro
+                                Grid.SetColumn(_peon, 0)
+                                Grid.SetRow(_peon, 0)
+                                Negros.Children.Add(_peon)
+                                _matrizN(0, 0) = _peon
+                            ElseIf IsNothing(_matrizN(0, 1)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonNegro
+                                Grid.SetColumn(_peon, 0)
+                                Grid.SetRow(_peon, 1)
+                                Negros.Children.Add(_peon)
+                                _matrizN(0, 1) = _peon
+                            ElseIf IsNothing(_matrizN(0, 2)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonNegro
+                                Grid.SetColumn(_peon, 0)
+                                Grid.SetRow(_peon, 2)
+                                Negros.Children.Add(_peon)
+                                _matrizN(0, 2) = _peon
+                            ElseIf IsNothing(_matrizN(0, 3)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonNegro
+                                Grid.SetColumn(_peon, 0)
+                                Grid.SetRow(_peon, 3)
+                                Negros.Children.Add(_peon)
+                                _matrizN(0, 3) = _peon
+                            ElseIf IsNothing(_matrizN(0, 4)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonNegro
+                                Grid.SetColumn(_peon, 0)
+                                Grid.SetRow(_peon, 4)
+                                Negros.Children.Add(_peon)
+                                _matrizN(0, 4) = _peon
+                            ElseIf IsNothing(_matrizN(0, 5)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonNegro
+                                Grid.SetColumn(_peon, 0)
+                                Grid.SetRow(_peon, 5)
+                                Negros.Children.Add(_peon)
+                                _matrizN(0, 5) = _peon
+                            ElseIf IsNothing(_matrizN(0, 6)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonNegro
+                                Grid.SetColumn(_peon, 0)
+                                Grid.SetRow(_peon, 6)
+                                Negros.Children.Add(_peon)
+                                _matrizN(0, 6) = _peon
+                            ElseIf IsNothing(_matrizN(0, 7)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonNegro
+                                Grid.SetColumn(_peon, 0)
+                                Grid.SetRow(_peon, 7)
+                                Negros.Children.Add(_peon)
+                                _matrizN(0, 7) = _peon
+                            End If
+                            Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                            _matriz(_mouseX, _mouseY) = Nothing
+                            Mover()
+                            JugadorRojo.IsChecked = False
+                            JugadorNegro.IsChecked = True
+                        ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReinaNegro") Then
+                            If IsNothing(_matrizN(1, 6)) Then
+                                Dim _reina As New Pieces
+                                _reina.Fill = ChessPieces.ReinaNegro
+                                Grid.SetColumn(_reina, 1)
+                                Grid.SetRow(_reina, 6)
+                                Negros.Children.Add(_reina)
+                                _matrizN(1, 6) = _reina
+                            End If
+
+                            Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                            _matriz(_mouseX, _mouseY) = Nothing
+                            Mover()
+                            JugadorRojo.IsChecked = False
+                            JugadorNegro.IsChecked = True
+                        ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReyNegro") Then
+                            If IsNothing(_matrizN(1, 7)) Then
+                                Dim _rey As New Pieces
+                                _rey.Fill = ChessPieces.ReyNegro
+                                Grid.SetColumn(_rey, 1)
+                                Grid.SetRow(_rey, 7)
+                                Negros.Children.Add(_rey)
+                                _matrizN(1, 7) = _rey
+                            End If
+
+                            Ganan.Text = "Ganan Rojos"
+                            Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                            _matriz(_mouseX, _mouseY) = Nothing
+                            Mover()
+                            JugadorRojo.IsChecked = False
+                            JugadorNegro.IsChecked = True
+                        ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("TorreNegro") Then
+                            If IsNothing(_matrizN(1, 0)) Then
+                                Dim _torre As New Pieces
+                                _torre.Fill = ChessPieces.TorreNegro
+                                Grid.SetColumn(_torre, 1)
+                                Grid.SetRow(_torre, 0)
+                                Negros.Children.Add(_torre)
+                                _matrizN(1, 0) = _torre
+                            ElseIf IsNothing(_matrizN(1, 1)) Then
+                                Dim _torre As New Pieces
+                                _torre.Fill = ChessPieces.TorreNegro
+                                Grid.SetColumn(_torre, 1)
+                                Grid.SetRow(_torre, 1)
+                                Negros.Children.Add(_torre)
+                                _matrizN(1, 1) = _torre
+                            End If
+
                             Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
                             _matriz(_mouseX, _mouseY) = Nothing
                             Mover()
@@ -292,7 +487,159 @@ Class MainWindow
             ElseIf JugadorNegro.IsChecked = True Then
                 If (_mouseY = _newY - 1) Then
                     If Not IsNothing(_matriz(_mouseX, _mouseY)) Then
-                        If _matriz(_mouseX, _mouseY).fill.ToString.Contains("Rojo") Then
+                        If _matriz(_mouseX, _mouseY).fill.ToString.Contains("AlfilRojo") Then
+                            If IsNothing(_matrizR(0, 4)) Then
+                                Dim _alfil As New Pieces
+                                _alfil.Fill = ChessPieces.AlfilRojo
+                                Grid.SetColumn(_alfil, 0)
+                                Grid.SetRow(_alfil, 4)
+                                Rojos.Children.Add(_alfil)
+                                _matrizR(0, 4) = _alfil
+                            ElseIf IsNothing(_matrizR(0, 5)) Then
+                                Dim _alfil As New Pieces
+                                _alfil.Fill = ChessPieces.AlfilRojo
+                                Grid.SetColumn(_alfil, 0)
+                                Grid.SetRow(_alfil, 5)
+                                Rojos.Children.Add(_alfil)
+                                _matrizR(0, 5) = _alfil
+                            End If
+                            Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                            _matriz(_mouseX, _mouseY) = Nothing
+                            Mover()
+                            JugadorNegro.IsChecked = False
+                            JugadorRojo.IsChecked = True
+                        ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("CaballoRojo") Then
+                            If IsNothing(_matrizR(0, 2)) Then
+                                Dim _caballo As New Pieces
+                                _caballo.Fill = ChessPieces.CaballoRojo
+                                Grid.SetColumn(_caballo, 0)
+                                Grid.SetRow(_caballo, 2)
+                                Rojos.Children.Add(_caballo)
+                                _matrizR(0, 2) = _caballo
+                            ElseIf IsNothing(_matrizR(0, 3)) Then
+                                Dim _caballo As New Pieces
+                                _caballo.Fill = ChessPieces.CaballoRojo
+                                Grid.SetColumn(_caballo, 0)
+                                Grid.SetRow(_caballo, 3)
+                                Rojos.Children.Add(_caballo)
+                                _matrizR(0, 3) = _caballo
+                            End If
+                            Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                            _matriz(_mouseX, _mouseY) = Nothing
+                            Mover()
+                            JugadorNegro.IsChecked = False
+                            JugadorRojo.IsChecked = True
+                        ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("PeonRojo") Then
+                            If IsNothing(_matrizR(1, 0)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonRojo
+                                Grid.SetColumn(_peon, 1)
+                                Grid.SetRow(_peon, 0)
+                                Rojos.Children.Add(_peon)
+                                _matrizR(1, 0) = _peon
+                            ElseIf IsNothing(_matrizR(1, 1)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonRojo
+                                Grid.SetColumn(_peon, 1)
+                                Grid.SetRow(_peon, 1)
+                                Rojos.Children.Add(_peon)
+                                _matrizR(1, 1) = _peon
+                            ElseIf IsNothing(_matrizR(1, 2)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonRojo
+                                Grid.SetColumn(_peon, 1)
+                                Grid.SetRow(_peon, 2)
+                                Rojos.Children.Add(_peon)
+                                _matrizR(1, 2) = _peon
+                            ElseIf IsNothing(_matrizR(1, 3)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonRojo
+                                Grid.SetColumn(_peon, 1)
+                                Grid.SetRow(_peon, 3)
+                                Rojos.Children.Add(_peon)
+                                _matrizR(1, 3) = _peon
+                            ElseIf IsNothing(_matrizR(1, 4)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonRojo
+                                Grid.SetColumn(_peon, 1)
+                                Grid.SetRow(_peon, 4)
+                                Rojos.Children.Add(_peon)
+                                _matrizR(1, 4) = _peon
+                            ElseIf IsNothing(_matrizR(1, 5)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonRojo
+                                Grid.SetColumn(_peon, 1)
+                                Grid.SetRow(_peon, 5)
+                                Rojos.Children.Add(_peon)
+                                _matrizR(1, 5) = _peon
+                            ElseIf IsNothing(_matrizR(1, 6)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonRojo
+                                Grid.SetColumn(_peon, 1)
+                                Grid.SetRow(_peon, 6)
+                                Rojos.Children.Add(_peon)
+                                _matrizR(1, 6) = _peon
+                            ElseIf IsNothing(_matrizR(1, 7)) Then
+                                Dim _peon As New Pieces
+                                _peon.Fill = ChessPieces.PeonRojo
+                                Grid.SetColumn(_peon, 1)
+                                Grid.SetRow(_peon, 7)
+                                Rojos.Children.Add(_peon)
+                                _matrizR(1, 7) = _peon
+                            End If
+                            Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                            _matriz(_mouseX, _mouseY) = Nothing
+                            Mover()
+                            JugadorNegro.IsChecked = False
+                            JugadorRojo.IsChecked = True
+                        ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReinaRojo") Then
+                            If IsNothing(_matrizR(0, 6)) Then
+                                Dim _reina As New Pieces
+                                _reina.Fill = ChessPieces.ReinaRojo
+                                Grid.SetColumn(_reina, 0)
+                                Grid.SetRow(_reina, 6)
+                                Rojos.Children.Add(_reina)
+                                _matrizR(0, 6) = _reina
+                            End If
+
+                            Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                            _matriz(_mouseX, _mouseY) = Nothing
+                            Mover()
+                            JugadorNegro.IsChecked = False
+                            JugadorRojo.IsChecked = True
+                        ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReyRojo") Then
+                            If IsNothing(_matrizR(0, 7)) Then
+                                Dim _rey As New Pieces
+                                _rey.Fill = ChessPieces.ReyRojo
+                                Grid.SetColumn(_rey, 0)
+                                Grid.SetRow(_rey, 7)
+                                Rojos.Children.Add(_rey)
+                                _matrizR(0, 7) = _rey
+                            End If
+
+                            Ganan.Text = "Ganan Rojos"
+                            Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                            _matriz(_mouseX, _mouseY) = Nothing
+                            Mover()
+                            JugadorNegro.IsChecked = False
+                            JugadorRojo.IsChecked = True
+                        ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("TorreRojo") Then
+                            If IsNothing(_matrizR(0, 0)) Then
+                                Dim _torre As New Pieces
+                                _torre.Fill = ChessPieces.TorreRojo
+                                Grid.SetColumn(_torre, 0)
+                                Grid.SetRow(_torre, 0)
+                                Rojos.Children.Add(_torre)
+                                _matrizR(0, 0) = _torre
+                            ElseIf IsNothing(_matrizR(0, 1)) Then
+                                Dim _torre As New Pieces
+                                _torre.Fill = ChessPieces.TorreRojo
+                                Grid.SetColumn(_torre, 0)
+                                Grid.SetRow(_torre, 1)
+                                Rojos.Children.Add(_torre)
+                                _matrizR(0, 1) = _torre
+                            End If
+
                             Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
                             _matriz(_mouseX, _mouseY) = Nothing
                             Mover()
@@ -315,24 +662,339 @@ Class MainWindow
                     Mover()
                     JugadorRojo.IsChecked = False
                     JugadorNegro.IsChecked = True
-                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("Negro") Then
+                ElseIf _matriz(_mouseX, _mouseY).fill.ToString.Contains("AlfilNegro") Then
+                    If IsNothing(_matrizN(1, 4)) Then
+                        Dim _alfil As New Pieces
+                        _alfil.Fill = ChessPieces.AlfilNegro
+                        Grid.SetColumn(_alfil, 1)
+                        Grid.SetRow(_alfil, 4)
+                        Negros.Children.Add(_alfil)
+                        _matrizN(1, 4) = _alfil
+                    ElseIf IsNothing(_matrizN(1, 5)) Then
+                        Dim _alfil As New Pieces
+                        _alfil.Fill = ChessPieces.AlfilNegro
+                        Grid.SetColumn(_alfil, 1)
+                        Grid.SetRow(_alfil, 5)
+                        Negros.Children.Add(_alfil)
+                        _matrizN(1, 5) = _alfil
+                    End If
                     Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
                     _matriz(_mouseX, _mouseY) = Nothing
                     Mover()
                     JugadorRojo.IsChecked = False
                     JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("CaballoNegro") Then
+                    If IsNothing(_matrizN(1, 2)) Then
+                        Dim _caballo As New Pieces
+                        _caballo.Fill = ChessPieces.CaballoNegro
+                        Grid.SetColumn(_caballo, 1)
+                        Grid.SetRow(_caballo, 2)
+                        Negros.Children.Add(_caballo)
+                        _matrizN(1, 2) = _caballo
+                    ElseIf IsNothing(_matrizN(1, 3)) Then
+                        Dim _caballo As New Pieces
+                        _caballo.Fill = ChessPieces.CaballoNegro
+                        Grid.SetColumn(_caballo, 1)
+                        Grid.SetRow(_caballo, 3)
+                        Negros.Children.Add(_caballo)
+                        _matrizN(1, 3) = _caballo
+                    End If
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("PeonNegro") Then
+                    If IsNothing(_matrizN(0, 0)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 0)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 0) = _peon
+                    ElseIf IsNothing(_matrizN(0, 1)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 1)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 1) = _peon
+                    ElseIf IsNothing(_matrizN(0, 2)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 2)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 2) = _peon
+                    ElseIf IsNothing(_matrizN(0, 3)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 3)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 3) = _peon
+                    ElseIf IsNothing(_matrizN(0, 4)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 4)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 4) = _peon
+                    ElseIf IsNothing(_matrizN(0, 5)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 5)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 5) = _peon
+                    ElseIf IsNothing(_matrizN(0, 6)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 6)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 6) = _peon
+                    ElseIf IsNothing(_matrizN(0, 7)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 7)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 7) = _peon
+                    End If
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReinaNegro") Then
+                    If IsNothing(_matrizN(1, 6)) Then
+                        Dim _reina As New Pieces
+                        _reina.Fill = ChessPieces.ReinaNegro
+                        Grid.SetColumn(_reina, 1)
+                        Grid.SetRow(_reina, 6)
+                        Negros.Children.Add(_reina)
+                        _matrizN(1, 6) = _reina
+                    End If
+
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReyNegro") Then
+                    If IsNothing(_matrizN(1, 7)) Then
+                        Dim _rey As New Pieces
+                        _rey.Fill = ChessPieces.ReyNegro
+                        Grid.SetColumn(_rey, 1)
+                        Grid.SetRow(_rey, 7)
+                        Negros.Children.Add(_rey)
+                        _matrizN(1, 7) = _rey
+                    End If
+
+                    Ganan.Text = "Ganan Rojos"
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("TorreNegro") Then
+                    If IsNothing(_matrizN(1, 0)) Then
+                        Dim _torre As New Pieces
+                        _torre.Fill = ChessPieces.TorreNegro
+                        Grid.SetColumn(_torre, 1)
+                        Grid.SetRow(_torre, 0)
+                        Negros.Children.Add(_torre)
+                        _matrizN(1, 0) = _torre
+                    ElseIf IsNothing(_matrizN(1, 1)) Then
+                        Dim _torre As New Pieces
+                        _torre.Fill = ChessPieces.TorreNegro
+                        Grid.SetColumn(_torre, 1)
+                        Grid.SetRow(_torre, 1)
+                        Negros.Children.Add(_torre)
+                        _matrizN(1, 1) = _torre
+                    End If
+
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _mouseX <> _newX Or _newY = _mouseY Then ''Error de movimiento
+                    _objeto = Nothing
+                    MsgBox("Movimiento Ilegal")
+                    JugadorRojo.IsChecked = True
+                    JugadorNegro.IsChecked = False
                 End If
             ElseIf _objeto.Fill = ChessPieces.TorreNegro Then
                 If IsNothing(_matriz(_mouseX, _mouseY)) Then
                     Mover()
                     JugadorNegro.IsChecked = False
                     JugadorRojo.IsChecked = True
-                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("Rojo") Then
+                ElseIf _matriz(_mouseX, _mouseY).fill.ToString.Contains("AlfilRojo") Then
+                    If IsNothing(_matrizR(0, 4)) Then
+                        Dim _alfil As New Pieces
+                        _alfil.Fill = ChessPieces.AlfilRojo
+                        Grid.SetColumn(_alfil, 0)
+                        Grid.SetRow(_alfil, 4)
+                        Rojos.Children.Add(_alfil)
+                        _matrizR(0, 4) = _alfil
+                    ElseIf IsNothing(_matrizR(0, 5)) Then
+                        Dim _alfil As New Pieces
+                        _alfil.Fill = ChessPieces.AlfilRojo
+                        Grid.SetColumn(_alfil, 0)
+                        Grid.SetRow(_alfil, 5)
+                        Rojos.Children.Add(_alfil)
+                        _matrizR(0, 5) = _alfil
+                    End If
                     Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
                     _matriz(_mouseX, _mouseY) = Nothing
                     Mover()
                     JugadorNegro.IsChecked = False
                     JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("CaballoRojo") Then
+                    If IsNothing(_matrizR(0, 2)) Then
+                        Dim _caballo As New Pieces
+                        _caballo.Fill = ChessPieces.CaballoRojo
+                        Grid.SetColumn(_caballo, 0)
+                        Grid.SetRow(_caballo, 2)
+                        Rojos.Children.Add(_caballo)
+                        _matrizR(0, 2) = _caballo
+                    ElseIf IsNothing(_matrizR(0, 3)) Then
+                        Dim _caballo As New Pieces
+                        _caballo.Fill = ChessPieces.CaballoRojo
+                        Grid.SetColumn(_caballo, 0)
+                        Grid.SetRow(_caballo, 3)
+                        Rojos.Children.Add(_caballo)
+                        _matrizR(0, 3) = _caballo
+                    End If
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("PeonRojo") Then
+                    If IsNothing(_matrizR(1, 0)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 0)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 0) = _peon
+                    ElseIf IsNothing(_matrizR(1, 1)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 1)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 1) = _peon
+                    ElseIf IsNothing(_matrizR(1, 2)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 2)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 2) = _peon
+                    ElseIf IsNothing(_matrizR(1, 3)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 3)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 3) = _peon
+                    ElseIf IsNothing(_matrizR(1, 4)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 4)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 4) = _peon
+                    ElseIf IsNothing(_matrizR(1, 5)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 5)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 5) = _peon
+                    ElseIf IsNothing(_matrizR(1, 6)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 6)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 6) = _peon
+                    ElseIf IsNothing(_matrizR(1, 7)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 7)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 7) = _peon
+                    End If
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReinaRojo") Then
+                    If IsNothing(_matrizR(0, 6)) Then
+                        Dim _reina As New Pieces
+                        _reina.Fill = ChessPieces.ReinaRojo
+                        Grid.SetColumn(_reina, 0)
+                        Grid.SetRow(_reina, 6)
+                        Rojos.Children.Add(_reina)
+                        _matrizR(0, 6) = _reina
+                    End If
+
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReyRojo") Then
+                    If IsNothing(_matrizR(0, 7)) Then
+                        Dim _rey As New Pieces
+                        _rey.Fill = ChessPieces.ReyRojo
+                        Grid.SetColumn(_rey, 0)
+                        Grid.SetRow(_rey, 7)
+                        Rojos.Children.Add(_rey)
+                        _matrizR(0, 7) = _rey
+                    End If
+
+                    Ganan.Text = "Ganan Rojos"
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("TorreRojo") Then
+                    If IsNothing(_matrizR(0, 0)) Then
+                        Dim _torre As New Pieces
+                        _torre.Fill = ChessPieces.TorreRojo
+                        Grid.SetColumn(_torre, 0)
+                        Grid.SetRow(_torre, 0)
+                        Rojos.Children.Add(_torre)
+                        _matrizR(0, 0) = _torre
+                    ElseIf IsNothing(_matrizR(0, 1)) Then
+                        Dim _torre As New Pieces
+                        _torre.Fill = ChessPieces.TorreRojo
+                        Grid.SetColumn(_torre, 0)
+                        Grid.SetRow(_torre, 1)
+                        Rojos.Children.Add(_torre)
+                        _matrizR(0, 1) = _torre
+                    End If
+
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+
+                ElseIf _mouseX <> _newX Or _newY = _mouseY Then ''Error de movimiento
+                    _objeto = Nothing
+                    MsgBox("Movimiento Ilegal")
+                    JugadorNegro.IsChecked = True
+                    JugadorRojo.IsChecked = False
                 End If
             End If
         Else
@@ -349,12 +1011,169 @@ Class MainWindow
                     Mover()
                     JugadorRojo.IsChecked = False
                     JugadorNegro.IsChecked = True
-                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("Negro") Then
+                ElseIf _matriz(_mouseX, _mouseY).fill.ToString.Contains("AlfilNegro") Then
+                    If IsNothing(_matrizN(1, 4)) Then
+                        Dim _alfil As New Pieces
+                        _alfil.Fill = ChessPieces.AlfilNegro
+                        Grid.SetColumn(_alfil, 1)
+                        Grid.SetRow(_alfil, 4)
+                        Negros.Children.Add(_alfil)
+                        _matrizN(1, 4) = _alfil
+                    ElseIf IsNothing(_matrizN(1, 5)) Then
+                        Dim _alfil As New Pieces
+                        _alfil.Fill = ChessPieces.AlfilNegro
+                        Grid.SetColumn(_alfil, 1)
+                        Grid.SetRow(_alfil, 5)
+                        Negros.Children.Add(_alfil)
+                        _matrizN(1, 5) = _alfil
+                    End If
                     Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
                     _matriz(_mouseX, _mouseY) = Nothing
                     Mover()
                     JugadorRojo.IsChecked = False
                     JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("CaballoNegro") Then
+                    If IsNothing(_matrizN(1, 2)) Then
+                        Dim _caballo As New Pieces
+                        _caballo.Fill = ChessPieces.CaballoNegro
+                        Grid.SetColumn(_caballo, 1)
+                        Grid.SetRow(_caballo, 2)
+                        Negros.Children.Add(_caballo)
+                        _matrizN(1, 2) = _caballo
+                    ElseIf IsNothing(_matrizN(1, 3)) Then
+                        Dim _caballo As New Pieces
+                        _caballo.Fill = ChessPieces.CaballoNegro
+                        Grid.SetColumn(_caballo, 1)
+                        Grid.SetRow(_caballo, 3)
+                        Negros.Children.Add(_caballo)
+                        _matrizN(1, 3) = _caballo
+                    End If
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("PeonNegro") Then
+                    If IsNothing(_matrizN(0, 0)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 0)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 0) = _peon
+                    ElseIf IsNothing(_matrizN(0, 1)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 1)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 1) = _peon
+                    ElseIf IsNothing(_matrizN(0, 2)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 2)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 2) = _peon
+                    ElseIf IsNothing(_matrizN(0, 3)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 3)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 3) = _peon
+                    ElseIf IsNothing(_matrizN(0, 4)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 4)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 4) = _peon
+                    ElseIf IsNothing(_matrizN(0, 5)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 5)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 5) = _peon
+                    ElseIf IsNothing(_matrizN(0, 6)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 6)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 6) = _peon
+                    ElseIf IsNothing(_matrizN(0, 7)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 7)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 7) = _peon
+                    End If
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReinaNegro") Then
+                    If IsNothing(_matrizN(1, 6)) Then
+                        Dim _reina As New Pieces
+                        _reina.Fill = ChessPieces.ReinaNegro
+                        Grid.SetColumn(_reina, 1)
+                        Grid.SetRow(_reina, 6)
+                        Negros.Children.Add(_reina)
+                        _matrizN(1, 6) = _reina
+                    End If
+
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReyNegro") Then
+                    If IsNothing(_matrizN(1, 7)) Then
+                        Dim _rey As New Pieces
+                        _rey.Fill = ChessPieces.ReyNegro
+                        Grid.SetColumn(_rey, 1)
+                        Grid.SetRow(_rey, 7)
+                        Negros.Children.Add(_rey)
+                        _matrizN(1, 7) = _rey
+                    End If
+
+                    Ganan.Text = "Ganan Rojos"
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("TorreNegro") Then
+                    If IsNothing(_matrizN(1, 0)) Then
+                        Dim _torre As New Pieces
+                        _torre.Fill = ChessPieces.TorreNegro
+                        Grid.SetColumn(_torre, 1)
+                        Grid.SetRow(_torre, 0)
+                        Negros.Children.Add(_torre)
+                        _matrizN(1, 0) = _torre
+                    ElseIf IsNothing(_matrizN(1, 1)) Then
+                        Dim _torre As New Pieces
+                        _torre.Fill = ChessPieces.TorreNegro
+                        Grid.SetColumn(_torre, 1)
+                        Grid.SetRow(_torre, 1)
+                        Negros.Children.Add(_torre)
+                        _matrizN(1, 1) = _torre
+                    End If
+
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _mouseX <> _newX Or _newY = _mouseY Then ''Error de movimiento
+                    _objeto = Nothing
+                    MsgBox("Movimiento Ilegal")
+                    JugadorRojo.IsChecked = True
+                    JugadorNegro.IsChecked = False
                 End If
             End If
         ElseIf _objeto.Fill = ChessPieces.AlfilNegro Then
@@ -364,12 +1183,169 @@ Class MainWindow
                     Mover()
                     JugadorNegro.IsChecked = False
                     JugadorRojo.IsChecked = True
-                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("Rojo") Then
+                ElseIf _matriz(_mouseX, _mouseY).fill.ToString.Contains("AlfilRojo") Then
+                    If IsNothing(_matrizR(0, 4)) Then
+                        Dim _alfil As New Pieces
+                        _alfil.Fill = ChessPieces.AlfilRojo
+                        Grid.SetColumn(_alfil, 0)
+                        Grid.SetRow(_alfil, 4)
+                        Rojos.Children.Add(_alfil)
+                        _matrizR(0, 4) = _alfil
+                    ElseIf IsNothing(_matrizR(0, 5)) Then
+                        Dim _alfil As New Pieces
+                        _alfil.Fill = ChessPieces.AlfilRojo
+                        Grid.SetColumn(_alfil, 0)
+                        Grid.SetRow(_alfil, 5)
+                        Rojos.Children.Add(_alfil)
+                        _matrizR(0, 5) = _alfil
+                    End If
                     Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
                     _matriz(_mouseX, _mouseY) = Nothing
                     Mover()
                     JugadorNegro.IsChecked = False
                     JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("CaballoRojo") Then
+                    If IsNothing(_matrizR(0, 2)) Then
+                        Dim _caballo As New Pieces
+                        _caballo.Fill = ChessPieces.CaballoRojo
+                        Grid.SetColumn(_caballo, 0)
+                        Grid.SetRow(_caballo, 2)
+                        Rojos.Children.Add(_caballo)
+                        _matrizR(0, 2) = _caballo
+                    ElseIf IsNothing(_matrizR(0, 3)) Then
+                        Dim _caballo As New Pieces
+                        _caballo.Fill = ChessPieces.CaballoRojo
+                        Grid.SetColumn(_caballo, 0)
+                        Grid.SetRow(_caballo, 3)
+                        Rojos.Children.Add(_caballo)
+                        _matrizR(0, 3) = _caballo
+                    End If
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("PeonRojo") Then
+                    If IsNothing(_matrizR(1, 0)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 0)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 0) = _peon
+                    ElseIf IsNothing(_matrizR(1, 1)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 1)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 1) = _peon
+                    ElseIf IsNothing(_matrizR(1, 2)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 2)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 2) = _peon
+                    ElseIf IsNothing(_matrizR(1, 3)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 3)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 3) = _peon
+                    ElseIf IsNothing(_matrizR(1, 4)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 4)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 4) = _peon
+                    ElseIf IsNothing(_matrizR(1, 5)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 5)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 5) = _peon
+                    ElseIf IsNothing(_matrizR(1, 6)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 6)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 6) = _peon
+                    ElseIf IsNothing(_matrizR(1, 7)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 7)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 7) = _peon
+                    End If
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReinaRojo") Then
+                    If IsNothing(_matrizR(0, 6)) Then
+                        Dim _reina As New Pieces
+                        _reina.Fill = ChessPieces.ReinaRojo
+                        Grid.SetColumn(_reina, 0)
+                        Grid.SetRow(_reina, 6)
+                        Rojos.Children.Add(_reina)
+                        _matrizR(0, 6) = _reina
+                    End If
+
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReyRojo") Then
+                    If IsNothing(_matrizR(0, 7)) Then
+                        Dim _rey As New Pieces
+                        _rey.Fill = ChessPieces.ReyRojo
+                        Grid.SetColumn(_rey, 0)
+                        Grid.SetRow(_rey, 7)
+                        Rojos.Children.Add(_rey)
+                        _matrizR(0, 7) = _rey
+                    End If
+
+                    Ganan.Text = "Ganan Rojos"
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("TorreRojo") Then
+                    If IsNothing(_matrizR(0, 0)) Then
+                        Dim _torre As New Pieces
+                        _torre.Fill = ChessPieces.TorreRojo
+                        Grid.SetColumn(_torre, 0)
+                        Grid.SetRow(_torre, 0)
+                        Rojos.Children.Add(_torre)
+                        _matrizR(0, 0) = _torre
+                    ElseIf IsNothing(_matrizR(0, 1)) Then
+                        Dim _torre As New Pieces
+                        _torre.Fill = ChessPieces.TorreRojo
+                        Grid.SetColumn(_torre, 0)
+                        Grid.SetRow(_torre, 1)
+                        Rojos.Children.Add(_torre)
+                        _matrizR(0, 1) = _torre
+                    End If
+
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _mouseX <> _newX Or _newY = _mouseY Then ''Error de movimiento
+                    _objeto = Nothing
+                    MsgBox("Movimiento Ilegal")
+                    JugadorNegro.IsChecked = True
+                    JugadorRojo.IsChecked = False
                 End If
             End If
         Else
@@ -385,12 +1361,169 @@ Class MainWindow
                         Mover()
                         JugadorNegro.IsChecked = True
                         JugadorRojo.IsChecked = False
-                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("Negro") Then
+                    ElseIf _matriz(_mouseX, _mouseY).fill.ToString.Contains("AlfilNegro") Then
+                        If IsNothing(_matrizN(1, 4)) Then
+                            Dim _alfil As New Pieces
+                            _alfil.Fill = ChessPieces.AlfilNegro
+                            Grid.SetColumn(_alfil, 1)
+                            Grid.SetRow(_alfil, 4)
+                            Negros.Children.Add(_alfil)
+                            _matrizN(1, 4) = _alfil
+                        ElseIf IsNothing(_matrizN(1, 5)) Then
+                            Dim _alfil As New Pieces
+                            _alfil.Fill = ChessPieces.AlfilNegro
+                            Grid.SetColumn(_alfil, 1)
+                            Grid.SetRow(_alfil, 5)
+                            Negros.Children.Add(_alfil)
+                            _matrizN(1, 5) = _alfil
+                        End If
                         Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
                         _matriz(_mouseX, _mouseY) = Nothing
                         Mover()
-                        JugadorNegro.IsChecked = True
                         JugadorRojo.IsChecked = False
+                        JugadorNegro.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("CaballoNegro") Then
+                        If IsNothing(_matrizN(1, 2)) Then
+                            Dim _caballo As New Pieces
+                            _caballo.Fill = ChessPieces.CaballoNegro
+                            Grid.SetColumn(_caballo, 1)
+                            Grid.SetRow(_caballo, 2)
+                            Negros.Children.Add(_caballo)
+                            _matrizN(1, 2) = _caballo
+                        ElseIf IsNothing(_matrizN(1, 3)) Then
+                            Dim _caballo As New Pieces
+                            _caballo.Fill = ChessPieces.CaballoNegro
+                            Grid.SetColumn(_caballo, 1)
+                            Grid.SetRow(_caballo, 3)
+                            Negros.Children.Add(_caballo)
+                            _matrizN(1, 3) = _caballo
+                        End If
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorRojo.IsChecked = False
+                        JugadorNegro.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("PeonNegro") Then
+                        If IsNothing(_matrizN(0, 0)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 0)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 0) = _peon
+                        ElseIf IsNothing(_matrizN(0, 1)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 1)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 1) = _peon
+                        ElseIf IsNothing(_matrizN(0, 2)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 2)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 2) = _peon
+                        ElseIf IsNothing(_matrizN(0, 3)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 3)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 3) = _peon
+                        ElseIf IsNothing(_matrizN(0, 4)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 4)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 4) = _peon
+                        ElseIf IsNothing(_matrizN(0, 5)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 5)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 5) = _peon
+                        ElseIf IsNothing(_matrizN(0, 6)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 6)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 6) = _peon
+                        ElseIf IsNothing(_matrizN(0, 7)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 7)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 7) = _peon
+                        End If
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorRojo.IsChecked = False
+                        JugadorNegro.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReinaNegro") Then
+                        If IsNothing(_matrizN(1, 6)) Then
+                            Dim _reina As New Pieces
+                            _reina.Fill = ChessPieces.ReinaNegro
+                            Grid.SetColumn(_reina, 1)
+                            Grid.SetRow(_reina, 6)
+                            Negros.Children.Add(_reina)
+                            _matrizN(1, 6) = _reina
+                        End If
+
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorRojo.IsChecked = False
+                        JugadorNegro.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReyNegro") Then
+                        If IsNothing(_matrizN(1, 7)) Then
+                            Dim _rey As New Pieces
+                            _rey.Fill = ChessPieces.ReyNegro
+                            Grid.SetColumn(_rey, 1)
+                            Grid.SetRow(_rey, 7)
+                            Negros.Children.Add(_rey)
+                            _matrizN(1, 7) = _rey
+                        End If
+
+                        Ganan.Text = "Ganan Rojos"
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorRojo.IsChecked = False
+                        JugadorNegro.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("TorreNegro") Then
+                        If IsNothing(_matrizN(1, 0)) Then
+                            Dim _torre As New Pieces
+                            _torre.Fill = ChessPieces.TorreNegro
+                            Grid.SetColumn(_torre, 1)
+                            Grid.SetRow(_torre, 0)
+                            Negros.Children.Add(_torre)
+                            _matrizN(1, 0) = _torre
+                        ElseIf IsNothing(_matrizN(1, 1)) Then
+                            Dim _torre As New Pieces
+                            _torre.Fill = ChessPieces.TorreNegro
+                            Grid.SetColumn(_torre, 1)
+                            Grid.SetRow(_torre, 1)
+                            Negros.Children.Add(_torre)
+                            _matrizN(1, 1) = _torre
+                        End If
+
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorRojo.IsChecked = False
+                        JugadorNegro.IsChecked = True
+                    ElseIf _mouseX <> _newX Or _newY = _mouseY Then ''Error de movimiento
+                        _objeto = Nothing
+                        MsgBox("Movimiento Ilegal")
+                        JugadorRojo.IsChecked = True
+                        JugadorNegro.IsChecked = False
                     End If
                 End If
             End If
@@ -401,12 +1534,169 @@ Class MainWindow
                         Mover()
                         JugadorNegro.IsChecked = False
                         JugadorRojo.IsChecked = True
-                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("Rojo") Then
+                    ElseIf _matriz(_mouseX, _mouseY).fill.ToString.Contains("AlfilRojo") Then
+                        If IsNothing(_matrizR(0, 4)) Then
+                            Dim _alfil As New Pieces
+                            _alfil.Fill = ChessPieces.AlfilRojo
+                            Grid.SetColumn(_alfil, 0)
+                            Grid.SetRow(_alfil, 4)
+                            Rojos.Children.Add(_alfil)
+                            _matrizR(0, 4) = _alfil
+                        ElseIf IsNothing(_matrizR(0, 5)) Then
+                            Dim _alfil As New Pieces
+                            _alfil.Fill = ChessPieces.AlfilRojo
+                            Grid.SetColumn(_alfil, 0)
+                            Grid.SetRow(_alfil, 5)
+                            Rojos.Children.Add(_alfil)
+                            _matrizR(0, 5) = _alfil
+                        End If
                         Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
                         _matriz(_mouseX, _mouseY) = Nothing
                         Mover()
                         JugadorNegro.IsChecked = False
                         JugadorRojo.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("CaballoRojo") Then
+                        If IsNothing(_matrizR(0, 2)) Then
+                            Dim _caballo As New Pieces
+                            _caballo.Fill = ChessPieces.CaballoRojo
+                            Grid.SetColumn(_caballo, 0)
+                            Grid.SetRow(_caballo, 2)
+                            Rojos.Children.Add(_caballo)
+                            _matrizR(0, 2) = _caballo
+                        ElseIf IsNothing(_matrizR(0, 3)) Then
+                            Dim _caballo As New Pieces
+                            _caballo.Fill = ChessPieces.CaballoRojo
+                            Grid.SetColumn(_caballo, 0)
+                            Grid.SetRow(_caballo, 3)
+                            Rojos.Children.Add(_caballo)
+                            _matrizR(0, 3) = _caballo
+                        End If
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorNegro.IsChecked = False
+                        JugadorRojo.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("PeonRojo") Then
+                        If IsNothing(_matrizR(1, 0)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 0)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 0) = _peon
+                        ElseIf IsNothing(_matrizR(1, 1)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 1)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 1) = _peon
+                        ElseIf IsNothing(_matrizR(1, 2)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 2)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 2) = _peon
+                        ElseIf IsNothing(_matrizR(1, 3)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 3)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 3) = _peon
+                        ElseIf IsNothing(_matrizR(1, 4)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 4)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 4) = _peon
+                        ElseIf IsNothing(_matrizR(1, 5)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 5)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 5) = _peon
+                        ElseIf IsNothing(_matrizR(1, 6)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 6)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 6) = _peon
+                        ElseIf IsNothing(_matrizR(1, 7)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 7)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 7) = _peon
+                        End If
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorNegro.IsChecked = False
+                        JugadorRojo.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReinaRojo") Then
+                        If IsNothing(_matrizR(0, 6)) Then
+                            Dim _reina As New Pieces
+                            _reina.Fill = ChessPieces.ReinaRojo
+                            Grid.SetColumn(_reina, 0)
+                            Grid.SetRow(_reina, 6)
+                            Rojos.Children.Add(_reina)
+                            _matrizR(0, 6) = _reina
+                        End If
+
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorNegro.IsChecked = False
+                        JugadorRojo.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReyRojo") Then
+                        If IsNothing(_matrizR(0, 7)) Then
+                            Dim _rey As New Pieces
+                            _rey.Fill = ChessPieces.ReyRojo
+                            Grid.SetColumn(_rey, 0)
+                            Grid.SetRow(_rey, 7)
+                            Rojos.Children.Add(_rey)
+                            _matrizR(0, 7) = _rey
+                        End If
+
+                        Ganan.Text = "Ganan Rojos"
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorNegro.IsChecked = False
+                        JugadorRojo.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("TorreRojo") Then
+                        If IsNothing(_matrizR(0, 0)) Then
+                            Dim _torre As New Pieces
+                            _torre.Fill = ChessPieces.TorreRojo
+                            Grid.SetColumn(_torre, 0)
+                            Grid.SetRow(_torre, 0)
+                            Rojos.Children.Add(_torre)
+                            _matrizR(0, 0) = _torre
+                        ElseIf IsNothing(_matrizR(0, 1)) Then
+                            Dim _torre As New Pieces
+                            _torre.Fill = ChessPieces.TorreRojo
+                            Grid.SetColumn(_torre, 0)
+                            Grid.SetRow(_torre, 1)
+                            Rojos.Children.Add(_torre)
+                            _matrizR(0, 1) = _torre
+                        End If
+
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorNegro.IsChecked = False
+                        JugadorRojo.IsChecked = True
+                    ElseIf _mouseX <> _newX Or _newY = _mouseY Then ''Error de movimiento
+                        _objeto = Nothing
+                        MsgBox("Movimiento Ilegal")
+                        JugadorNegro.IsChecked = True
+                        JugadorRojo.IsChecked = False
                     End If
                 End If
             End If
@@ -421,12 +1711,169 @@ Class MainWindow
                         Mover()
                         JugadorNegro.IsChecked = True
                         JugadorRojo.IsChecked = False
-                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("Negro") Then
+                    ElseIf _matriz(_mouseX, _mouseY).fill.ToString.Contains("AlfilNegro") Then
+                        If IsNothing(_matrizN(1, 4)) Then
+                            Dim _alfil As New Pieces
+                            _alfil.Fill = ChessPieces.AlfilNegro
+                            Grid.SetColumn(_alfil, 1)
+                            Grid.SetRow(_alfil, 4)
+                            Negros.Children.Add(_alfil)
+                            _matrizN(1, 4) = _alfil
+                        ElseIf IsNothing(_matrizN(1, 5)) Then
+                            Dim _alfil As New Pieces
+                            _alfil.Fill = ChessPieces.AlfilNegro
+                            Grid.SetColumn(_alfil, 1)
+                            Grid.SetRow(_alfil, 5)
+                            Negros.Children.Add(_alfil)
+                            _matrizN(1, 5) = _alfil
+                        End If
                         Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
                         _matriz(_mouseX, _mouseY) = Nothing
                         Mover()
-                        JugadorNegro.IsChecked = True
                         JugadorRojo.IsChecked = False
+                        JugadorNegro.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("CaballoNegro") Then
+                        If IsNothing(_matrizN(1, 2)) Then
+                            Dim _caballo As New Pieces
+                            _caballo.Fill = ChessPieces.CaballoNegro
+                            Grid.SetColumn(_caballo, 1)
+                            Grid.SetRow(_caballo, 2)
+                            Negros.Children.Add(_caballo)
+                            _matrizN(1, 2) = _caballo
+                        ElseIf IsNothing(_matrizN(1, 3)) Then
+                            Dim _caballo As New Pieces
+                            _caballo.Fill = ChessPieces.CaballoNegro
+                            Grid.SetColumn(_caballo, 1)
+                            Grid.SetRow(_caballo, 3)
+                            Negros.Children.Add(_caballo)
+                            _matrizN(1, 3) = _caballo
+                        End If
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorRojo.IsChecked = False
+                        JugadorNegro.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("PeonNegro") Then
+                        If IsNothing(_matrizN(0, 0)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 0)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 0) = _peon
+                        ElseIf IsNothing(_matrizN(0, 1)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 1)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 1) = _peon
+                        ElseIf IsNothing(_matrizN(0, 2)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 2)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 2) = _peon
+                        ElseIf IsNothing(_matrizN(0, 3)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 3)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 3) = _peon
+                        ElseIf IsNothing(_matrizN(0, 4)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 4)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 4) = _peon
+                        ElseIf IsNothing(_matrizN(0, 5)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 5)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 5) = _peon
+                        ElseIf IsNothing(_matrizN(0, 6)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 6)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 6) = _peon
+                        ElseIf IsNothing(_matrizN(0, 7)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonNegro
+                            Grid.SetColumn(_peon, 0)
+                            Grid.SetRow(_peon, 7)
+                            Negros.Children.Add(_peon)
+                            _matrizN(0, 7) = _peon
+                        End If
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorRojo.IsChecked = False
+                        JugadorNegro.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReinaNegro") Then
+                        If IsNothing(_matrizN(1, 6)) Then
+                            Dim _reina As New Pieces
+                            _reina.Fill = ChessPieces.ReinaNegro
+                            Grid.SetColumn(_reina, 1)
+                            Grid.SetRow(_reina, 6)
+                            Negros.Children.Add(_reina)
+                            _matrizN(1, 6) = _reina
+                        End If
+
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorRojo.IsChecked = False
+                        JugadorNegro.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReyNegro") Then
+                        If IsNothing(_matrizN(1, 7)) Then
+                            Dim _rey As New Pieces
+                            _rey.Fill = ChessPieces.ReyNegro
+                            Grid.SetColumn(_rey, 1)
+                            Grid.SetRow(_rey, 7)
+                            Negros.Children.Add(_rey)
+                            _matrizN(1, 7) = _rey
+                        End If
+
+                        Ganan.Text = "Ganan Rojos"
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorRojo.IsChecked = False
+                        JugadorNegro.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("TorreNegro") Then
+                        If IsNothing(_matrizN(1, 0)) Then
+                            Dim _torre As New Pieces
+                            _torre.Fill = ChessPieces.TorreNegro
+                            Grid.SetColumn(_torre, 1)
+                            Grid.SetRow(_torre, 0)
+                            Negros.Children.Add(_torre)
+                            _matrizN(1, 0) = _torre
+                        ElseIf IsNothing(_matrizN(1, 1)) Then
+                            Dim _torre As New Pieces
+                            _torre.Fill = ChessPieces.TorreNegro
+                            Grid.SetColumn(_torre, 1)
+                            Grid.SetRow(_torre, 1)
+                            Negros.Children.Add(_torre)
+                            _matrizN(1, 1) = _torre
+                        End If
+
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorRojo.IsChecked = False
+                        JugadorNegro.IsChecked = True
+                    ElseIf _mouseX <> _newX Or _newY = _mouseY Then ''Error de movimiento
+                        _objeto = Nothing
+                        MsgBox("Movimiento Ilegal")
+                        JugadorRojo.IsChecked = True
+                        JugadorNegro.IsChecked = False
                     End If
                 End If
             End If
@@ -437,12 +1884,169 @@ Class MainWindow
                         Mover()
                         JugadorNegro.IsChecked = False
                         JugadorRojo.IsChecked = True
-                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("Rojo") Then
+                    ElseIf _matriz(_mouseX, _mouseY).fill.ToString.Contains("AlfilRojo") Then
+                        If IsNothing(_matrizR(0, 4)) Then
+                            Dim _alfil As New Pieces
+                            _alfil.Fill = ChessPieces.AlfilRojo
+                            Grid.SetColumn(_alfil, 0)
+                            Grid.SetRow(_alfil, 4)
+                            Rojos.Children.Add(_alfil)
+                            _matrizR(0, 4) = _alfil
+                        ElseIf IsNothing(_matrizR(0, 5)) Then
+                            Dim _alfil As New Pieces
+                            _alfil.Fill = ChessPieces.AlfilRojo
+                            Grid.SetColumn(_alfil, 0)
+                            Grid.SetRow(_alfil, 5)
+                            Rojos.Children.Add(_alfil)
+                            _matrizR(0, 5) = _alfil
+                        End If
                         Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
                         _matriz(_mouseX, _mouseY) = Nothing
                         Mover()
                         JugadorNegro.IsChecked = False
                         JugadorRojo.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("CaballoRojo") Then
+                        If IsNothing(_matrizR(0, 2)) Then
+                            Dim _caballo As New Pieces
+                            _caballo.Fill = ChessPieces.CaballoRojo
+                            Grid.SetColumn(_caballo, 0)
+                            Grid.SetRow(_caballo, 2)
+                            Rojos.Children.Add(_caballo)
+                            _matrizR(0, 2) = _caballo
+                        ElseIf IsNothing(_matrizR(0, 3)) Then
+                            Dim _caballo As New Pieces
+                            _caballo.Fill = ChessPieces.CaballoRojo
+                            Grid.SetColumn(_caballo, 0)
+                            Grid.SetRow(_caballo, 3)
+                            Rojos.Children.Add(_caballo)
+                            _matrizR(0, 3) = _caballo
+                        End If
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorNegro.IsChecked = False
+                        JugadorRojo.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("PeonRojo") Then
+                        If IsNothing(_matrizR(1, 0)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 0)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 0) = _peon
+                        ElseIf IsNothing(_matrizR(1, 1)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 1)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 1) = _peon
+                        ElseIf IsNothing(_matrizR(1, 2)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 2)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 2) = _peon
+                        ElseIf IsNothing(_matrizR(1, 3)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 3)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 3) = _peon
+                        ElseIf IsNothing(_matrizR(1, 4)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 4)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 4) = _peon
+                        ElseIf IsNothing(_matrizR(1, 5)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 5)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 5) = _peon
+                        ElseIf IsNothing(_matrizR(1, 6)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 6)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 6) = _peon
+                        ElseIf IsNothing(_matrizR(1, 7)) Then
+                            Dim _peon As New Pieces
+                            _peon.Fill = ChessPieces.PeonRojo
+                            Grid.SetColumn(_peon, 1)
+                            Grid.SetRow(_peon, 7)
+                            Rojos.Children.Add(_peon)
+                            _matrizR(1, 7) = _peon
+                        End If
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorNegro.IsChecked = False
+                        JugadorRojo.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReinaRojo") Then
+                        If IsNothing(_matrizR(0, 6)) Then
+                            Dim _reina As New Pieces
+                            _reina.Fill = ChessPieces.ReinaRojo
+                            Grid.SetColumn(_reina, 0)
+                            Grid.SetRow(_reina, 6)
+                            Rojos.Children.Add(_reina)
+                            _matrizR(0, 6) = _reina
+                        End If
+
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorNegro.IsChecked = False
+                        JugadorRojo.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReyRojo") Then
+                        If IsNothing(_matrizR(0, 7)) Then
+                            Dim _rey As New Pieces
+                            _rey.Fill = ChessPieces.ReyRojo
+                            Grid.SetColumn(_rey, 0)
+                            Grid.SetRow(_rey, 7)
+                            Rojos.Children.Add(_rey)
+                            _matrizR(0, 7) = _rey
+                        End If
+
+                        Ganan.Text = "Ganan Rojos"
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorNegro.IsChecked = False
+                        JugadorRojo.IsChecked = True
+                    ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("TorreRojo") Then
+                        If IsNothing(_matrizR(0, 0)) Then
+                            Dim _torre As New Pieces
+                            _torre.Fill = ChessPieces.TorreRojo
+                            Grid.SetColumn(_torre, 0)
+                            Grid.SetRow(_torre, 0)
+                            Rojos.Children.Add(_torre)
+                            _matrizR(0, 0) = _torre
+                        ElseIf IsNothing(_matrizR(0, 1)) Then
+                            Dim _torre As New Pieces
+                            _torre.Fill = ChessPieces.TorreRojo
+                            Grid.SetColumn(_torre, 0)
+                            Grid.SetRow(_torre, 1)
+                            Rojos.Children.Add(_torre)
+                            _matrizR(0, 1) = _torre
+                        End If
+
+                        Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                        _matriz(_mouseX, _mouseY) = Nothing
+                        Mover()
+                        JugadorNegro.IsChecked = False
+                        JugadorRojo.IsChecked = True
+                    ElseIf _mouseX <> _newX Or _newY = _mouseY Then ''Error de movimiento
+                        _objeto = Nothing
+                        MsgBox("Movimiento Ilegal")
+                        JugadorNegro.IsChecked = True
+                        JugadorRojo.IsChecked = False
                     End If
                 End If
             End If
@@ -458,12 +2062,169 @@ Class MainWindow
                     Mover()
                     JugadorNegro.IsChecked = True
                     JugadorRojo.IsChecked = False
-                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("Negro") Then
+                ElseIf _matriz(_mouseX, _mouseY).fill.ToString.Contains("AlfilNegro") Then
+                    If IsNothing(_matrizN(1, 4)) Then
+                        Dim _alfil As New Pieces
+                        _alfil.Fill = ChessPieces.AlfilNegro
+                        Grid.SetColumn(_alfil, 1)
+                        Grid.SetRow(_alfil, 4)
+                        Negros.Children.Add(_alfil)
+                        _matrizN(1, 4) = _alfil
+                    ElseIf IsNothing(_matrizN(1, 5)) Then
+                        Dim _alfil As New Pieces
+                        _alfil.Fill = ChessPieces.AlfilNegro
+                        Grid.SetColumn(_alfil, 1)
+                        Grid.SetRow(_alfil, 5)
+                        Negros.Children.Add(_alfil)
+                        _matrizN(1, 5) = _alfil
+                    End If
                     Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
                     _matriz(_mouseX, _mouseY) = Nothing
                     Mover()
-                    JugadorNegro.IsChecked = True
                     JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("CaballoNegro") Then
+                    If IsNothing(_matrizN(1, 2)) Then
+                        Dim _caballo As New Pieces
+                        _caballo.Fill = ChessPieces.CaballoNegro
+                        Grid.SetColumn(_caballo, 1)
+                        Grid.SetRow(_caballo, 2)
+                        Negros.Children.Add(_caballo)
+                        _matrizN(1, 2) = _caballo
+                    ElseIf IsNothing(_matrizN(1, 3)) Then
+                        Dim _caballo As New Pieces
+                        _caballo.Fill = ChessPieces.CaballoNegro
+                        Grid.SetColumn(_caballo, 1)
+                        Grid.SetRow(_caballo, 3)
+                        Negros.Children.Add(_caballo)
+                        _matrizN(1, 3) = _caballo
+                    End If
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("PeonNegro") Then
+                    If IsNothing(_matrizN(0, 0)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 0)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 0) = _peon
+                    ElseIf IsNothing(_matrizN(0, 1)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 1)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 1) = _peon
+                    ElseIf IsNothing(_matrizN(0, 2)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 2)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 2) = _peon
+                    ElseIf IsNothing(_matrizN(0, 3)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 3)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 3) = _peon
+                    ElseIf IsNothing(_matrizN(0, 4)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 4)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 4) = _peon
+                    ElseIf IsNothing(_matrizN(0, 5)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 5)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 5) = _peon
+                    ElseIf IsNothing(_matrizN(0, 6)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 6)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 6) = _peon
+                    ElseIf IsNothing(_matrizN(0, 7)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonNegro
+                        Grid.SetColumn(_peon, 0)
+                        Grid.SetRow(_peon, 7)
+                        Negros.Children.Add(_peon)
+                        _matrizN(0, 7) = _peon
+                    End If
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReinaNegro") Then
+                    If IsNothing(_matrizN(1, 6)) Then
+                        Dim _reina As New Pieces
+                        _reina.Fill = ChessPieces.ReinaNegro
+                        Grid.SetColumn(_reina, 1)
+                        Grid.SetRow(_reina, 6)
+                        Negros.Children.Add(_reina)
+                        _matrizN(1, 6) = _reina
+                    End If
+
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReyNegro") Then
+                    If IsNothing(_matrizN(1, 7)) Then
+                        Dim _rey As New Pieces
+                        _rey.Fill = ChessPieces.ReyNegro
+                        Grid.SetColumn(_rey, 1)
+                        Grid.SetRow(_rey, 7)
+                        Negros.Children.Add(_rey)
+                        _matrizN(1, 7) = _rey
+                    End If
+
+                    Ganan.Text = "Ganan Rojos"
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("TorreNegro") Then
+                    If IsNothing(_matrizN(1, 0)) Then
+                        Dim _torre As New Pieces
+                        _torre.Fill = ChessPieces.TorreNegro
+                        Grid.SetColumn(_torre, 1)
+                        Grid.SetRow(_torre, 0)
+                        Negros.Children.Add(_torre)
+                        _matrizN(1, 0) = _torre
+                    ElseIf IsNothing(_matrizN(1, 1)) Then
+                        Dim _torre As New Pieces
+                        _torre.Fill = ChessPieces.TorreNegro
+                        Grid.SetColumn(_torre, 1)
+                        Grid.SetRow(_torre, 1)
+                        Negros.Children.Add(_torre)
+                        _matrizN(1, 1) = _torre
+                    End If
+
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorRojo.IsChecked = False
+                    JugadorNegro.IsChecked = True
+                ElseIf _mouseX <> _newX Or _newY = _mouseY Then ''Error de movimiento
+                    _objeto = Nothing
+                    MsgBox("Movimiento Ilegal")
+                    JugadorRojo.IsChecked = True
+                    JugadorNegro.IsChecked = False
                 End If
             End If
         ElseIf _objeto.Fill = ChessPieces.ReinaNegro Then
@@ -472,12 +2233,169 @@ Class MainWindow
                     Mover()
                     JugadorNegro.IsChecked = False
                     JugadorRojo.IsChecked = True
-                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("Rojo") Then
+                ElseIf _matriz(_mouseX, _mouseY).fill.ToString.Contains("AlfilRojo") Then
+                    If IsNothing(_matrizR(0, 4)) Then
+                        Dim _alfil As New Pieces
+                        _alfil.Fill = ChessPieces.AlfilRojo
+                        Grid.SetColumn(_alfil, 0)
+                        Grid.SetRow(_alfil, 4)
+                        Rojos.Children.Add(_alfil)
+                        _matrizR(0, 4) = _alfil
+                    ElseIf IsNothing(_matrizR(0, 5)) Then
+                        Dim _alfil As New Pieces
+                        _alfil.Fill = ChessPieces.AlfilRojo
+                        Grid.SetColumn(_alfil, 0)
+                        Grid.SetRow(_alfil, 5)
+                        Rojos.Children.Add(_alfil)
+                        _matrizR(0, 5) = _alfil
+                    End If
                     Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
                     _matriz(_mouseX, _mouseY) = Nothing
                     Mover()
                     JugadorNegro.IsChecked = False
                     JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("CaballoRojo") Then
+                    If IsNothing(_matrizR(0, 2)) Then
+                        Dim _caballo As New Pieces
+                        _caballo.Fill = ChessPieces.CaballoRojo
+                        Grid.SetColumn(_caballo, 0)
+                        Grid.SetRow(_caballo, 2)
+                        Rojos.Children.Add(_caballo)
+                        _matrizR(0, 2) = _caballo
+                    ElseIf IsNothing(_matrizR(0, 3)) Then
+                        Dim _caballo As New Pieces
+                        _caballo.Fill = ChessPieces.CaballoRojo
+                        Grid.SetColumn(_caballo, 0)
+                        Grid.SetRow(_caballo, 3)
+                        Rojos.Children.Add(_caballo)
+                        _matrizR(0, 3) = _caballo
+                    End If
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("PeonRojo") Then
+                    If IsNothing(_matrizR(1, 0)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 0)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 0) = _peon
+                    ElseIf IsNothing(_matrizR(1, 1)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 1)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 1) = _peon
+                    ElseIf IsNothing(_matrizR(1, 2)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 2)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 2) = _peon
+                    ElseIf IsNothing(_matrizR(1, 3)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 3)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 3) = _peon
+                    ElseIf IsNothing(_matrizR(1, 4)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 4)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 4) = _peon
+                    ElseIf IsNothing(_matrizR(1, 5)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 5)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 5) = _peon
+                    ElseIf IsNothing(_matrizR(1, 6)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 6)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 6) = _peon
+                    ElseIf IsNothing(_matrizR(1, 7)) Then
+                        Dim _peon As New Pieces
+                        _peon.Fill = ChessPieces.PeonRojo
+                        Grid.SetColumn(_peon, 1)
+                        Grid.SetRow(_peon, 7)
+                        Rojos.Children.Add(_peon)
+                        _matrizR(1, 7) = _peon
+                    End If
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReinaRojo") Then
+                    If IsNothing(_matrizR(0, 6)) Then
+                        Dim _reina As New Pieces
+                        _reina.Fill = ChessPieces.ReinaRojo
+                        Grid.SetColumn(_reina, 0)
+                        Grid.SetRow(_reina, 6)
+                        Rojos.Children.Add(_reina)
+                        _matrizR(0, 6) = _reina
+                    End If
+
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("ReyRojo") Then
+                    If IsNothing(_matrizR(0, 7)) Then
+                        Dim _rey As New Pieces
+                        _rey.Fill = ChessPieces.ReyRojo
+                        Grid.SetColumn(_rey, 0)
+                        Grid.SetRow(_rey, 7)
+                        Rojos.Children.Add(_rey)
+                        _matrizR(0, 7) = _rey
+                    End If
+
+                    Ganan.Text = "Ganan Rojos"
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _matriz(_mouseX, _mouseY).Fill.ToString.Contains("TorreRojo") Then
+                    If IsNothing(_matrizR(0, 0)) Then
+                        Dim _torre As New Pieces
+                        _torre.Fill = ChessPieces.TorreRojo
+                        Grid.SetColumn(_torre, 0)
+                        Grid.SetRow(_torre, 0)
+                        Rojos.Children.Add(_torre)
+                        _matrizR(0, 0) = _torre
+                    ElseIf IsNothing(_matrizR(0, 1)) Then
+                        Dim _torre As New Pieces
+                        _torre.Fill = ChessPieces.TorreRojo
+                        Grid.SetColumn(_torre, 0)
+                        Grid.SetRow(_torre, 1)
+                        Rojos.Children.Add(_torre)
+                        _matrizR(0, 1) = _torre
+                    End If
+
+                    Tablero.Children.Remove(_matriz(_mouseX, _mouseY))
+                    _matriz(_mouseX, _mouseY) = Nothing
+                    Mover()
+                    JugadorNegro.IsChecked = False
+                    JugadorRojo.IsChecked = True
+                ElseIf _mouseX <> _newX Or _newY = _mouseY Then ''Error de movimiento
+                    _objeto = Nothing
+                    MsgBox("Movimiento Ilegal")
+                    JugadorNegro.IsChecked = True
+                    JugadorRojo.IsChecked = False
                 End If
             End If
         End If
